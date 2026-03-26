@@ -31,14 +31,16 @@ ld -o calculatrice calculatrice.o
 macOS Apple Silicon nécessite Docker car le binaire est pour Linux x86_64.
 
 ```bash
-docker run -it --rm -v $(pwd):/projet ubuntu:24.04
+docker run -it --rm --platform linux/amd64 -v $(pwd):/projet ubuntu:24.04
 cd /projet
 apt update
 apt install -y build-essential
-as -o calculatrice.o calculatrice.s
-ld -o calculatrice calculatrice.o --no-pie
+as -a --gstabs -o calculatrice.o calculatrice.s
+ld -o calculatrice calculatrice.o
 ./calculatrice
 ```
+(Tapez `exit` pour quitter Docker)
+
 
 ## Compilation and execution (EN)
 ### Linux
@@ -57,17 +59,20 @@ ld -o calculatrice calculatrice.o
 macOS Apple Silicon requires Docker because the binary is for Linux x86_64.
 
 ```bash
-docker run -it --rm -v $(pwd):/projet ubuntu:24.04
+docker run -it --rm --platform linux/amd64 -v $(pwd):/projet ubuntu:24.04
 cd /projet
 apt update
 apt install -y build-essential
-as -o calculatrice.o calculatrice.s
-ld -o calculatrice calculatrice.o --no-pie
+as -a --gstabs -o calculatrice.o calculatrice.s
+ld -o calculatrice calculatrice.o
 ./calculatrice
 ```
+(Type `exit` to quit Docker)
+
 ## Exemple (FR)
 
 ```bash
+
 Entrez l’expression postfixée : 3 4 + 2 *
 Résultat : 14
 ```
