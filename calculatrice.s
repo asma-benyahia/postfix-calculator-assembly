@@ -173,6 +173,15 @@ affiche:
     addq $31, %r8
     movb $0, (%r8)
 
+    /* TESTER LE BIT TOUT À GAUCHE */
+    movq $0, %r9
+    cmpq $0, %rax
+    jge not_negative      /* bit 63 = 0 : positif */
+    movq $1, %r9
+    notq %rax             /* inverser tous les bits */
+    addq $1, %rax         /* + 1 = valeur absolue */
+
+not_negative:
     cmpq $0, %rax
     jne conv
     movb $48, (%r8)
@@ -193,7 +202,16 @@ conv_loop:
     incq %r12
     cmpq $0, %rax
     jne conv_loop
+
 aff:
+    /* AJOUTER '-' SI NEGATIF */
+    cmpq $1, %r9
+    jne skip_minus
+    decq %r8
+    movb $45, (%r8)       /* '-' */
+    incq %r12
+
+skip_minus:
     /* AFFICHER RESULTAT */
     movq $1, %rax
     movq $1, %rdi
